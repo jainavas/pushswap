@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pushswap.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 17:06:47 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/19 19:01:12 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/24 21:17:12 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,29 @@ typedef struct pushswap
 	int		posmaxb;
 	int		posminb;
 	int		indexb;
+	int		indexa;
+	int		maxall;
+	int		minall;
 }	t_pscount;
 
-int		checkascending(t_list *stacka);
-void	printstacks(t_list *stacka, t_list *stackb, t_pscount *ct);
+typedef struct stack
+{
+	int				data;
+	struct stack	*next;
+	struct stack	*prev;
+}	t_psstack;
 
+
+int				checkascending(t_psstack *stacka);
+t_psstack		*stacknew(int data);
+t_psstack		*stacklast(t_psstack *lst);
+t_psstack		*stacksemilast(t_psstack *lst);
+t_psstack		*stackfirst(t_psstack *lst);
+int				stacksize(t_psstack *lst);
+void			stackclear(t_psstack **lst);
+int				getindex(t_psstack *stack, int num);
+void			stackadd_front(t_psstack **lst, t_psstack *new);
+void			stackadd_back(t_psstack **lst, t_psstack *new);
+void			printstacks(t_psstack *stacka, t_psstack *stackb, t_pscount *ct);
 
 #endif

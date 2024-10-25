@@ -3,25 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   pushswap.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 17:06:21 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/19 19:38:30 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/24 23:16:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pushswap.h"
 
-t_list	*ft_lst1beforelast(t_list *lst)
+int	sa_op(t_psstack **stacka)
 {
-	while (lst && lst->next->next)
-		lst = lst->next;
-	return (lst);
-}
-
-int	sa_op(t_list **stacka)
-{
-	t_list *tmp;
+	t_psstack *tmp;
 
 	if ((*stacka)->next == NULL)
 		return (0);
@@ -29,12 +22,14 @@ int	sa_op(t_list **stacka)
 	*stacka = (*stacka)->next; // go to 2
 	tmp->next = (*stacka)->next; // 1next is 2next
 	(*stacka)->next = tmp; // 2next is 1
+	(*stacka)->prev = NULL;
+	(*stacka)->next->prev = *stacka;
 	return (1);
 }
 
-int	sb_op(t_list **stackb)
+int	sb_op(t_psstack **stackb)
 {
-	t_list *tmp;
+	t_psstack *tmp;
 
 	if ((*stackb)->next == NULL)
 		return (0);
@@ -42,134 +37,159 @@ int	sb_op(t_list **stackb)
 	*stackb = (*stackb)->next; // go to 2
 	tmp->next = (*stackb)->next; // 1next is 2next
 	(*stackb)->next = tmp; // 2next is 1
+	(*stackb)->prev = NULL;
+	(*stackb)->next->prev = *stackb;
 	return (1);
 }
 
-int ss_op(t_list **stacka, t_list **stackb)
+int ss_op(t_psstack **stacka, t_psstack **stackb)
 {
 	if (sa_op(stacka) == 1 && sb_op(stackb) == 1)
 		return (1);
 	return (0);
 }
 
-int	pa_op(t_list **stacka, t_list **stackb)
+int	pa_op(t_psstack **stacka, t_psstack **stackb)
 {
-	t_list	*tmp;
+	t_psstack	*tmp;
 
 	if (*stackb == NULL)
 		return (0);
 	tmp = (*stackb)->next;
-	ft_lstadd_front(stacka, *stackb);
+	if (tmp != NULL)
+		tmp->prev = NULL;
+	(*stackb)->next = *stacka;
+	if (*stacka != NULL)
+		(*stacka)->prev = *stackb;
+	*stacka = *stackb;
 	*stackb = tmp;
-	return (1);
+	return (1);	
 }
 
-int	pb_op(t_list **stacka, t_list **stackb)
+int	pb_op(t_psstack **stacka, t_psstack **stackb)
 {
-	t_list	*tmp;
+	t_psstack	*tmp;
 
-	tmp = (*stacka)->next;
-	if ((*stacka)->content == NULL)
+	if (*stacka == NULL)
 		return (0);
-	ft_lstadd_front(stackb, *stacka);
+	tmp = (*stacka)->next;
+	tmp->prev = NULL;
+	stackadd_front(stackb, *stacka);
 	*stacka = tmp;
 	return (1);
 }
 
-int	ra_op(t_list **stacka)
+int	ra_op(t_psstack **stacka)
 {
-	t_list	*tmp;
-	t_list	*last;
+	t_psstack	*tmp;
+	t_psstack	*last;
 
-	if (ft_lstsize(*stacka) == 2)
-		return (sa_op(stacka));
-	if (ft_lstsize(*stacka) <= 1)
+	if (stacksize(*stacka) <= 1)
 		return (0);
 	tmp = *stacka;
 	*stacka = (*stacka)->next;
-	last = ft_lstlast(*stacka);
+	(*stacka)->prev = NULL;
+	last = stacklast(*stacka);
+	tmp->prev = last;
 	tmp->next = NULL;
 	last->next = tmp;
 	return (1);
 }
 
-int	rb_op(t_list **stackb)
+int	rb_op(t_psstack **stackb)
 {
-	t_list	*tmp;
+	t_psstack	*tmp;
+	t_psstack	*last;
 
-	if (ft_lstsize(*stackb) == 2)
-		return (sb_op(stackb));
-	if (ft_lstsize(*stackb) <= 1)
+	if (stacksize(*stackb) == 2)
+		return (sa_op(stackb));
+	if (stacksize(*stackb) <= 1)
 		return (0);
 	tmp = *stackb;
 	*stackb = (*stackb)->next;
-	ft_lstadd_back(stackb, tmp);
+	(*stackb)->prev = NULL;
+	last = stacklast(*stackb);
+	tmp->prev = last;
+	tmp->next = NULL;
+	last->next = tmp;
 	return (1);
 }
 
-int rr_op(t_list **stacka, t_list **stackb)
+int rr_op(t_psstack **stacka, t_psstack **stackb)
 {
+	int	i;
+
+	i = 0;
 	if (ra_op(stacka) == 1 && rb_op(stackb) == 1)
-		return (1);
-	return (0);
+		i++;
+	return (i);
 }
 
-int	rra_op(t_list **stacka)
+int	rra_op(t_psstack **stacka)
 {
-	t_list	*acttail;
-	t_list	*newtail;
-	t_list	*tmp;
+	t_psstack	*last;
+	t_psstack	*prev_last;
 
-	acttail = ft_lstlast(*stacka);
-	newtail = ft_lst1beforelast(*stacka);
-	tmp = *stacka;
-	*stacka = acttail;
-	(*stacka)->next = tmp;
-	newtail->next = NULL;
+	if (!(*stacka) || !(*stacka)->next)
+		return (0);
+	prev_last = stacksemilast(*stacka);
+	last = stacklast(*stacka);
+	if (*stacka)
+	{
+		last->prev = NULL;
+		last->next = *stacka;
+		last->next->prev = last;
+		prev_last->next = NULL;
+		*stacka = last;
+	}
 	return (1);
 }
 
-int	rrb_op(t_list **stackb)
+int	rrb_op(t_psstack **stackb)
 {
-	t_list	*acttail;
-	t_list	*newtail;
-	t_list	*tmp;
+	t_psstack	*acttail;
+	t_psstack	*newtail;
+	t_psstack	*tmp;
 
-	if (ft_lstsize(*stackb) == 2)
-		return (sb_op(stackb));
-	acttail = ft_lstlast(*stackb);
-	newtail = ft_lst1beforelast(*stackb);
+	acttail = stacklast(*stackb);
+	newtail = stacksemilast(*stackb);
 	tmp = *stackb;
 	*stackb = acttail;
 	(*stackb)->next = tmp;
+	(*stackb)->prev = NULL;
 	newtail->next = NULL;
 	return (1);
 }
 
-int rrr_op(t_list **stacka, t_list **stackb)
+int rrr_op(t_psstack **stacka, t_psstack **stackb)
 {
 	if (rra_op(stacka) == 1 && rrb_op(stackb) == 1)
 		return (1);
 	return (0);
 }
 
-void	getmaxmin(t_list *stackb, t_pscount *ct)
+int	getmaxmin(t_psstack *stackb, t_pscount *ct)
 {
 	int	i;
+	int	num;
 
 	i = 0;
-	ct->maxb = *(int *)stackb->content;
-	ct->minb = *(int *)stackb->content;
+	if (ct->maxb != INT_MIN)
+	{
+		ct->posmaxb = getindex(stackb, ct->maxb);
+		ct->posminb = getindex(stackb, ct->minb);
+	}
 	while (stackb)
 	{
-		if (*(int *)stackb->content > ct->maxb)
+		num = stackb->data;
+		if (num > ct->maxb)
 		{
-			ct->maxb = *(int *)stackb->content;
+			ct->maxb = num;
 			ct->posmaxb = i;
 		}
-		if (*(int *)stackb->content < ct->minb)
+		if (num < ct->minb)
 		{
-			ct->minb = *(int *)stackb->content;
+			ct->minb = num;
 			ct->posminb = i;
 		}
 		i++;
@@ -177,16 +197,16 @@ void	getmaxmin(t_list *stackb, t_pscount *ct)
 	}
 }
 
-int	checkrepeat(t_list *stack)
+int	checkrepeat(t_psstack *stack)
 {
-	t_list	*parse = NULL;
+	t_psstack	*parse = NULL;
 	int		num;
 
-	num = *(int *)stack->content;
+	num = stack->data;
 	parse = stack->next;
 	while (parse)
 	{
-		if (num == *(int *)parse->content)
+		if (num == parse->data)
 			return (-1);
 		parse = parse->next;
 	}
@@ -195,140 +215,260 @@ int	checkrepeat(t_list *stack)
 	return (checkrepeat(stack->next));
 }
 
-int checkascending(t_list *stacka)
+int checkdescending(t_psstack *stacka)
 {
-	t_list *parse;
-
-	parse = stacka->next;
-	while (parse)
+	while (stacka->next)
 	{
-		if (*(int *)stacka->content > *(int *)parse->content)
+		if (stacka->data < stacka->next->data)
 			return (-1);
-		parse = parse->next;
 		stacka = stacka->next;
 	}
 	return (0);
 }
 
-void	printstacks(t_list *stacka, t_list *stackb, t_pscount *ct)
+int checkascending(t_psstack *stacka)
+{
+	while (stacka->next)
+	{
+		if (stacka->data > stacka->next->data)
+			return (-1);
+		stacka = stacka->next;
+	}
+	return (0);
+}
+
+void	printstacks(t_psstack *stacka, t_psstack *stackb, t_pscount *ct)
 {
 	ft_printf("\nContenido a: \n");
 	while (stacka)
 	{
-		ft_printf("%d ", *(int *)(stacka->content));
+		ft_printf("%d ", (stacka->data));
 		stacka = stacka->next;
 	}
 	ft_printf("\nContenido b: \n");
 	while (stackb)
 	{
-		ft_printf("%d ", *(int *)(stackb->content));
+		ft_printf("%d ", (stackb->data));
 		stackb = stackb->next;
 	}
 	printf("\nnum ops: %d\n", ct->numop);
 }
 
-int	getindex(t_list *stack, int num)
+int	getindex(t_psstack *stack, int num)
 {
 	int	i;
 
 	i = 0;
+	stack = stackfirst(stack);
 	while (stack)
 	{
-		if (*(int *)stack->content == num)
+		if (stack->data == num)
 			return (i);
 		i++;
 		stack = stack->next;
 	}
+	return (-1);
 }
 
-int	getpricemov(int index, int num, t_list *stackb, t_pscount *ct)
+int	getcorrectpos(int num, t_psstack *stackb, t_pscount *ct)
 {
-	int 	res;
-	int 	diff;
-	t_list	*parse;
-
-	parse = stackb;
-	if (index > ct->len/2)
-		res = ct->len - index;
-	else
-		res = index;
-	diff = *(int *)parse->content - num;
-	while (parse)
-	{
-		if (*(int *)parse->content - num > 0 && *(int *)parse->content - num < diff)
-			diff = *(int *)parse->content - num;
-		parse = parse->next;
-	}
-	ct->indexb = getindex(stackb, num + diff);
-	if (ct->indexb > ft_lstsize(stackb)/2)
-		res += ft_lstsize(stackb) - ct->indexb;
-	else
-		res += ct->indexb;
-	return (res);
-}
-
-int	turc(t_list **stacka, t_list **stackb, t_pscount *ct)
-{
-	int		price;
-	t_list	*parse;
-	int		i;
+	int i;
+	t_psstack	*parse;
+	t_psstack	*tmp;
 
 	i = 0;
-	price = INT_MAX;
-	ct->numop += pb_op(stacka, stackb);
-	ct->numop += pb_op(stacka, stackb);
-	ct->len = ft_lstsize(*stacka) - 2;
-	getmaxmin(*stackb, ct);
-	while (ft_lstsize(*stacka) > 3)
+	parse = stackb;
+	while (parse)
 	{
-		parse = *stacka;
-		while (parse)
+		if (!parse->prev)
+			tmp = stacklast(parse);
+		else
+			tmp = parse->prev;
+		if (num > parse->data && num < tmp->data && ct->maxb != parse->data)
+			return (i);
+		i++;
+		parse = parse->next;
+	}
+	return (1000);
+}
+
+int	pricemax(t_psstack *stacka, t_psstack *stackb, t_pscount *ct)
+{
+	int		i;
+
+	while (stacka->data < ct->maxb)
+		stacka = stacka->next;
+	if (getindex(stacka, stacka->data) >= (stacksize(stacka)/2) + 1)
+		i = stacksize(stacka) - getindex(stacka, stacka->data);
+}
+
+int	getpricemov(t_psstack *stacka, t_psstack *stackb, t_pscount *ct)
+{
+	// index a, index b y relaciones entre num siempre tiene que ser introducido cuando el mayor que el es el ultimo y el menor que el es el primero
+	// retorna index a del que deberia ser mas barato de cambiar
+	t_psstack	*parse;
+	int		tmp;
+	int		price;
+	int		tmpprice;
+	int		localindexa;
+	int		localindexb;
+
+	price = 64643;
+	localindexa = 0;
+	parse = stackb;
+	while (stacka)
+	{
+		parse = stackb;
+		localindexb = 0;
+		while (localindexb < stacksize(stackb) && parse)
 		{
-			if (getpricemov(i, *(int *)parse->content, *stackb, ct) < price)
-				price = getpricemov(i, *(int *)parse->content, *stackb, ct);
-			i++;
+			tmpprice = 483332;
+			tmp = localindexb;
+			getmaxmin(stackfirst(stackb), ct);
+			if (stacka->data > ct->minb && stacka->data < ct->maxb)
+			{
+				tmpprice = 0;
+				localindexb = getcorrectpos(stacka->data, stackb, ct);
+				tmpprice += localindexa;
+				tmpprice += localindexb;
+				tmpprice++;
+			}
+			else if (stacka->data > ct->maxb || stacka->data < ct->minb)
+			{
+				tmpprice = 0;
+				localindexb = ct->posmaxb;
+				tmpprice += localindexa;
+				tmpprice += localindexb;
+				tmpprice++;
+			}
+			if (tmpprice < price)
+			{
+				price = tmpprice;
+				ct->indexa = localindexa;
+				ct->indexb = localindexb;
+			}
+			localindexb = tmp;
+			localindexb++;
 			parse = parse->next;
 		}
-		while (i-- > 0 && ct->indexb-- > 0)
-			ct->numop += rr_op(stacka, stackb);
-		if (i-- > 0)
-			ct->numop += ra_op(stacka);
-		if (ct->indexb > 0)
-			ct->numop += rb_op(stacka);
-		ct->numop += pb_op(stacka, stackb);
-		ct->len = ft_lstsize(*stacka);
+		localindexa++;
+		stacka = stacka->next;
 	}
-	while ((*stackb)->next)
+	return (price);
+}
+
+int	whenpivots(t_psstack **stacka, t_psstack **stackb, t_pscount *ct)
+{
+	int	a;
+	int	b;
+	int	c;
+	int	i;
+
+	a = (*stacka)->data;
+	b = (*stacka)->next->data;
+	c = (*stacka)->next->next->data;
+	if (c < (*stackb)->data)
 	{
-		ct->numop += rrb_op(stackb);
-		ct->numop += pa_op(stacka, stackb);
+		while ((*stackb)->data > c)
+			ct->numop += pa_op(stacka, stackb);
 	}
-	ct->numop += pa_op(stacka, stackb);
-	// if (*(int *)(*stacka)->content > *(int *)(*stacka)->next->content)
-	printstacks(*stacka, *stackb, ct);
+		ct->numop += rra_op(stacka);
+		while ((*stackb)->data > b)
+			ct->numop += pa_op(stacka, stackb);
+		ct->numop += rra_op(stacka);
+		while ((*stackb)->data > a)
+			ct->numop += pa_op(stacka, stackb);
+		ct->numop += rra_op(stacka);
+		while (*stackb)
+			ct->numop += pa_op(stacka, stackb);
+	return (0);
+}
+
+int	when3stacka(t_psstack **stacka, t_psstack **stackb, t_pscount *ct)
+{
+	if (checkascending(*stacka) == 0)
+		return (0);
+	else if ((*stacka)->data > (*stacka)->next->data && (*stacka)->next->next->data > (*stacka)->data) // BAC
+		ct->numop += sa_op(stacka);
+	else if ((*stacka)->data < (*stacka)->next->data && (*stacka)->next->next->data < (*stacka)->next->data)	// ACB
+	{
+		ct->numop += sa_op(stacka);
+		ct->numop += ra_op(stacka);
+	}
+	else if ((*stacka)->next->next->data < (*stacka)->next->data && (*stacka)->next->data > (*stacka)->data) // BCA
+		ct->numop += rra_op(stacka);
+	else if ((*stacka)->data > (*stacka)->next->data && (*stacka)->next->data < (*stacka)->next->next->data) // CAB
+		ct->numop += ra_op(stacka);
+	else if ((*stacka)->data > (*stacka)->next->data && (*stacka)->next->data > (*stacka)->next->next->data) // CBA
+	{
+		ct->numop += sa_op(stacka);
+		ct->numop += rra_op(stacka);
+	}
+	return (0);
+}
+
+int	turc(t_psstack **stacka, t_psstack **stackb, t_pscount *ct)
+{
+	int		price;
+	t_psstack	*parse;
+	int		i;
+
+	ct->numop += pb_op(stacka, stackb);
+	ct->numop += pb_op(stacka, stackb);
+	ct->maxb = INT_MIN;
+	ct->minb = INT_MAX;
+	getmaxmin(*stackb, ct);
+	while (stacksize(*stacka) > 3)
+	{
+		getpricemov(*stacka, *stackb, ct);
+		if (ct->indexa > 0)
+			while (ct->indexa-- > 0)
+			{
+				if (ct->indexb-- > 0)
+					ct->numop += rr_op(stacka, stackb);
+				else
+					ct->numop += ra_op(stacka);
+			}
+		if (ct->indexb > 0)
+			while (ct->indexb-- > 0)
+				ct->numop += rb_op(stackb);
+		ct->numop += pb_op(stacka, stackb);
+		getmaxmin(*stackb, ct);
+	}
+	when3stacka(stacka, stackb, ct);
+	if (ct->posmaxb > stacksize(*stackb)/2)
+		while (ct->posmaxb++ < stacksize(*stackb))
+			ct->numop += rrb_op(stackb);
+	else
+		while (ct->posmaxb--)
+			ct->numop += rb_op(stackb);
+	whenpivots(stacka, stackb, ct);
 	return (0);
 }
 
 int	main(int argc, char**argv)
 {
 	int	i;
-	int	*num;
-	t_list *stacka = NULL;
-	t_list *stackb = NULL;
+	int	num;
+	t_psstack *stacka = NULL;
+	t_psstack *stackb = NULL;
 	t_pscount *ct;
 
 	ct = ft_calloc(1, sizeof(t_pscount));
 	i = 1;
 	ct->numop = 0;
 	while (i < argc)
-	{
-		num = malloc(sizeof(int));
-		*num = ft_atoi(argv[i++]);
-		ft_lstadd_back(&stacka, ft_lstnew(num));
-	}
+		stackadd_front(&stacka, stacknew(ft_atoi(argv[i++])));
 	if (checkrepeat(stacka) == -1)
 		return (ft_printf("repes"), -1);
 	turc(&stacka, &stackb, ct);
-	ft_lstclear(&stacka, free);
+	if (checkascending(stacka) == -1)
+	{
+		printf("\nMAL ||%d||\n", ct->numop);
+		printstacks(stacka, stackb, ct);
+	}
+	else
+		printf("\nBIEN ||%d||\n", ct->numop);
+	stackclear(&stacka);
 	return (0);
 }
