@@ -37,7 +37,6 @@ t_psstack	*stacksemilast(t_psstack *lst)
 {
 	t_psstack	*tmp;
 
-	tmp = stackfirst(lst);
 	while (tmp->next->next)
 		tmp = tmp->next;
 	return (tmp);
