@@ -6,7 +6,7 @@
 /*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 22:06:36 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/28 16:21:15 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:54:04 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	sa_op(t_psstack **stacka)
 	(*stacka)->next = tmp;
 	(*stacka)->prev = NULL;
 	(*stacka)->next->prev = *stacka;
-	return (ft_putstr_fd("sa\n", 1), 1);
+	return (1);
 }
 
 int	sb_op(t_psstack **stackb)
@@ -39,13 +39,13 @@ int	sb_op(t_psstack **stackb)
 	(*stackb)->next = tmp;
 	(*stackb)->prev = NULL;
 	(*stackb)->next->prev = *stackb;
-	return (ft_putstr_fd("sb\n", 1), 1);
+	return (1);
 }
 
 int	ss_op(t_psstack **stacka, t_psstack **stackb)
 {
 	if (sa_op(stacka) == 1 && sb_op(stackb) == 1)
-		return (ft_putstr_fd("ss\n", 1), 1);
+		return (1);
 	return (0);
 }
 
@@ -63,7 +63,7 @@ int	pa_op(t_psstack **stacka, t_psstack **stackb)
 		(*stacka)->prev = *stackb;
 	*stacka = *stackb;
 	*stackb = tmp;
-	return (ft_putstr_fd("pa\n", 1), 1);
+	return (1);
 }
 
 int	pb_op(t_psstack **stacka, t_psstack **stackb)
@@ -76,5 +76,5 @@ int	pb_op(t_psstack **stacka, t_psstack **stackb)
 	tmp->prev = NULL;
 	stackadd_front(stackb, *stacka);
 	*stacka = tmp;
-	return (ft_putstr_fd("pb\n", 1), 1);
+	return (1);
 }

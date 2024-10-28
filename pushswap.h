@@ -6,7 +6,7 @@
 /*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 17:06:47 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/28 18:20:06 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:59:56 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void		printstacks(t_psstack *stacka, t_psstack *stackb, t_pscount *ct);
 int			when3stacka(t_psstack **stacka, t_pscount *ct);
 int			whenpivots(t_psstack **stacka, t_psstack **stackb, t_pscount *ct);
 void		moves(t_psstack **stacka, t_psstack **stackb, t_pscount *ct);
+void		bothrotator(t_psstack **stacka, t_psstack **stackb, t_pscount *ct);
 void		putbigfirst(t_psstack **stackb, t_pscount *ct);
 // operations
 int			sa_op(t_psstack **stacka);

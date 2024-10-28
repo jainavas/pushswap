@@ -6,7 +6,7 @@
 /*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 21:59:48 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/28 18:38:25 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:51:20 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,6 @@ void	priceget(t_psstack *stacka, t_psstack *stackb, t_pscount *ct)
 		ct->indexa = ct->localindexa;
 		ct->indexb = ct->localindexb;
 	}
-	if (ct->price > ct->maxprice)
-		ct->maxprice = ct->price;
 	ct->localindexb = ct->tmp;
 	ct->localindexb++;
 }

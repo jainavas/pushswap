@@ -6,7 +6,7 @@
 /*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 22:04:10 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/28 15:53:03 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:00:00 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,28 @@ void	putbigfirst(t_psstack **stackb, t_pscount *ct)
 	}
 }
 
+void	bothrotator(t_psstack **stacka, t_psstack **stackb, t_pscount *ct)
+{
+	while (ct->indexb > 0 && ct->indexa > 0
+		&& ct->indexb < ct->lenb / 2 && ct->indexa < ct->lena / 2)
+	{
+		ct->numop += rr_op(stacka, stackb);
+		ct->indexa--;
+		ct->indexb--;
+	}
+	while (ct->indexb > (ct->lenb / 2) + 1 && ct->indexa > (ct->lena / 2) + 1
+		&& ct->indexb < ct->lenb && ct->indexa < ct->lena)
+	{
+		ct->numop += rrr_op(stacka, stackb);
+		ct->indexa++;
+		ct->indexb++;
+	}
+}
+
 void	moves(t_psstack **stacka, t_psstack **stackb, t_pscount *ct)
 {
-	if (ct->indexb > 0)
+	bothrotator(stacka, stackb, ct);
+	if (ct->indexb > 0 && ct->indexb < ct->lenb)
 	{
 		if (ct->indexb > (ct->lenb / 2) + 1)
 			while (ct->indexb++ < ct->lenb)
@@ -36,7 +55,7 @@ void	moves(t_psstack **stacka, t_psstack **stackb, t_pscount *ct)
 			while (ct->indexb-- > 0)
 				ct->numop += rb_op(stackb);
 	}
-	if (ct->indexa > 0)
+	if (ct->indexa > 0 && ct->indexa < ct->lena)
 	{
 		if (ct->indexa > (ct->lena / 2) + 1)
 			while (ct->indexa++ < ct->lena)

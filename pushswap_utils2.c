@@ -6,7 +6,7 @@
 /*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 22:14:37 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/28 18:17:51 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:47:13 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,6 @@ void	printstacks(t_psstack *stacka, t_psstack *stackb, t_pscount *ct)
 		ft_printf("%d ", (stackb->data));
 		stackb = stackb->next;
 	}
-	printf("\nnum ops: %d\n", ct->numop);
+	if (ct)
+		printf("\nnum ops: %d\n", ct->numop);
 }

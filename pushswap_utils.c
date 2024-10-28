@@ -27,7 +27,7 @@ t_psstack	*stacklast(t_psstack *lst)
 {
 	t_psstack	*tmp;
 
-	tmp = stackfirst(lst);
+	tmp = lst;
 	while (tmp->next)
 		tmp = tmp->next;
 	return (tmp);

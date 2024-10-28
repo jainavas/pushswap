@@ -6,7 +6,7 @@
 /*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 17:06:21 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/28 18:41:30 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:55:16 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,10 @@ int	turc(t_psstack **stacka, t_psstack **stackb, t_pscount *ct)
 	ct->numop += pb_op(stacka, stackb);
 	ct->numop += pb_op(stacka, stackb);
 	ct->maxb = INT_MIN;
-	ct->maxprice = INT_MIN;
 	ct->minb = INT_MAX;
 	getmaxmin(*stackb, ct);
+	if ((*stackb)->data < (*stackb)->next->data)
+		ct->numop += sb_op(stackb);
 	while (ct->lena > 3)
 	{
 		getpricemov(*stacka, *stackb, ct);
@@ -119,7 +120,8 @@ int	main(int argc, char**argv)
 		turc(&stacka, &stackb, ct);
 	if (checkascending(stacka) != 0)
 		printf("MAL ||%d|| num mal:%d\n", ct->numop, checkascending(stacka));
-	printstacks(stacka, stackb, ct);
+	else
+		printf("		WIN ||%d||\n", ct->numop);
 	stackclear(&stacka);
 	stackclear(&stackb);
 	free(ct);
