@@ -14,7 +14,7 @@
 
 t_psstack	*stacknew(int data)
 {
-	t_psstack *new;
+	t_psstack	*new;
 
 	new = ft_calloc(1, sizeof(t_psstack));
 	new->data = data;
@@ -33,15 +33,6 @@ t_psstack	*stacklast(t_psstack *lst)
 	return (tmp);
 }
 
-t_psstack	*stacksemilast(t_psstack *lst)
-{
-	t_psstack	*tmp;
-
-	while (tmp->next->next)
-		tmp = tmp->next;
-	return (tmp);
-}
-
 t_psstack	*stackfirst(t_psstack *lst)
 {
 	t_psstack	*tmp;
@@ -54,13 +45,13 @@ t_psstack	*stackfirst(t_psstack *lst)
 
 void	stackclear(t_psstack **lst)
 {
-	t_psstack	*new;
+	t_psstack	*aux;
 
-	while (*lst != NULL)
+	while (*lst)
 	{
-		new = *lst;
-		*lst = new->next;
-		free(new);
+		aux = (*lst)->next;
+		free(*lst);
+		*lst = aux;
 	}
 }
 
@@ -77,37 +68,4 @@ void	stackadd_front(t_psstack **lst, t_psstack *new)
 		(*lst)->prev = new;
 		*lst = new;
 	}
-}
-
-void	stackadd_back(t_psstack **lst, t_psstack *new)
-{
-	t_psstack	*tmp;
-
-	if (lst)
-	{
-		if (*lst == NULL)
-			*lst = new;
-		else
-		{
-			tmp = stacklast(*(lst));
-			new->next = NULL;
-			tmp->next = new;
-			new->prev = tmp;
-		}
-	}
-}
-
-int	stacksize(t_psstack *lst)
-{
-	t_psstack	*new;
-	int		i;
-
-	i = 0;
-	new = stackfirst(lst);
-	while (new)
-	{
-		new = new->next;
-		i++;
-	}
-	return (i);
 }
