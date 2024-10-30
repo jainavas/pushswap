@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pushswap_op1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 22:06:36 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/29 22:08:46 by marvin           ###   ########.fr       */
+/*   Updated: 2024/10/30 16:48:04 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	sa_op(t_psstack **stacka)
 	(*stacka)->prev = NULL;
 	(*stacka)->next->prev = *stacka;
 	verifierlinks(stacka);
-	return (1);
+	return (ft_printf("sa\n"), 1);
 }
 
 int	sb_op(t_psstack **stackb)
@@ -41,7 +41,7 @@ int	sb_op(t_psstack **stackb)
 	(*stackb)->prev = NULL;
 	(*stackb)->next->prev = *stackb;
 	verifierlinks(stackb);
-	return (1);
+	return (ft_printf("sb\n"), 1);
 }
 
 int	ss_op(t_psstack **stacka, t_psstack **stackb)
@@ -60,9 +60,9 @@ int	pa_op(t_psstack **stacka, t_psstack **stackb)
 	tmp = (*stackb)->next;
 	if (tmp != NULL)
 		tmp->prev = NULL;
-	stackadd_front(stacka, *stackb);	
+	stackadd_front(stacka, *stackb);
 	*stackb = tmp;
-	return (1);
+	return (ft_printf("pa\n"), 1);
 }
 
 int	pb_op(t_psstack **stacka, t_psstack **stackb)
@@ -75,5 +75,5 @@ int	pb_op(t_psstack **stacka, t_psstack **stackb)
 	tmp->prev = NULL;
 	stackadd_front(stackb, *stacka);
 	*stacka = tmp;
-	return (1);
+	return (ft_printf("pb\n"), 1);
 }

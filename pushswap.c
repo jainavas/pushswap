@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pushswap.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 17:06:21 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/29 23:00:25 by marvin           ###   ########.fr       */
+/*   Updated: 2024/10/30 16:45:29 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	getindex(t_psstack *stack, int num)
 
 int	debuglilnum(t_psstack **stacka, t_psstack **stackb, t_pscount *ct)
 {
-	ct->lena = stacksize(*stacka);
 	if (ct->lena == 2)
 	{
 		if ((*stacka)->data > (*stacka)->next->data)
@@ -103,7 +102,7 @@ int	main(int argc, char**argv)
 	t_psstack	*stacka;
 	t_psstack	*stackb;
 	t_pscount	*ct;
-	char 		**res;
+	char		**res;
 
 	ct = ft_calloc(1, sizeof(t_pscount));
 	stacka = NULL;
@@ -118,15 +117,11 @@ int	main(int argc, char**argv)
 		if (args2(&stacka, argv, argc) == -1)
 			return (freepsw(&stacka, &stackb, ct), ft_printf("Error\n"), -1);
 	ct->numop = 0;
+	ct->lena = stacksize(stacka);
 	if (checkrepeat(stacka) == -1)
 		return (freepsw(&stacka, &stackb, ct), ft_printf("Error\n"), -1);
 	if (debuglilnum(&stacka, &stackb, ct) != -1)
 		turc(&stacka, &stackb, ct);
-	if (checkascending(stacka) != 0)
-		printf("MAL ||%d|| num mal:%d\n", ct->numop, checkascending(stacka));
-	else
-		printf("		WIN ||%d||\n", ct->numop);
-	printstacks(stacka, stackb, ct);
 	freepsw(&stacka, &stackb, ct);
 	return (0);
 }

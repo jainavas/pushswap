@@ -49,4 +49,3 @@ int	checkoverflow(const char *str)
 	}
 	return (0);
 }
-

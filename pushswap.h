@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pushswap.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 17:06:47 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/29 22:57:13 by marvin           ###   ########.fr       */
+/*   Updated: 2024/10/30 16:43:13 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_psstack	*stacklast(t_psstack *lst);
 t_psstack	*stackfirst(t_psstack *lst);
 int			stacksize(t_psstack *lst);
 void		stackclear(t_psstack **lst);
-void 		freepsw(t_psstack **stacka, t_psstack **stackb, t_pscount *ct);
+void		freepsw(t_psstack **stacka, t_psstack **stackb, t_pscount *ct);
 int			getindex(t_psstack *stack, int num);
 void		stackadd_front(t_psstack **lst, t_psstack *new);
 void		stackadd_back(t_psstack **lst, t_psstack *new);
@@ -82,12 +82,13 @@ int			sb_op(t_psstack **stackb);
 int			ss_op(t_psstack **stacka, t_psstack **stackb);
 int			pa_op(t_psstack **stacka, t_psstack **stackb);
 int			pb_op(t_psstack **stacka, t_psstack **stackb);
-int			rb_op(t_psstack **stackb);
-int			ra_op(t_psstack **stacka);
+int			rb_op(t_psstack **stackb, int both);
+int			ra_op(t_psstack **stacka, int both);
 int			rr_op(t_psstack **stacka, t_psstack **stackb);
 int			rrr_op(t_psstack **stacka, t_psstack **stackb);
-int			rra_op(t_psstack **stacka);
-int			rrb_op(t_psstack **stackb);
+int			rra_op(t_psstack **stacka, int both);
+int			rrb_op(t_psstack **stackb, int both);
+void		op_print(int num);
 // checks
 int			checkrepeat(t_psstack *stack);
 int			debuglilnum(t_psstack **stacka, t_psstack **stackb, t_pscount *ct);
@@ -96,7 +97,7 @@ int			checkoverflow(const char *str);
 int			args(t_psstack **stacka, char **argv, int argc);
 int			args2(t_psstack **stacka, char **argv, int argc);
 int			strofstrlen(char **res);
-void 		verifierlinks(t_psstack **stack);
+void		verifierlinks(t_psstack **stack);
 void		lilchanges(t_psstack **stacka, t_psstack **stackb, t_pscount *ct);
 
 #endif

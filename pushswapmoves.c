@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pushswapmoves.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 22:04:10 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/29 20:28:35 by marvin           ###   ########.fr       */
+/*   Updated: 2024/10/30 16:46:44 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	putbigfirst(t_psstack **stackb, t_pscount *ct)
 	{
 		if (ct->posmaxb > ct->lenb / 2)
 			while (ct->posmaxb++ < ct->lenb)
-				ct->numop += rrb_op(stackb);
+				ct->numop += rrb_op(stackb, 0);
 		else
 			while (ct->posmaxb-- > 0)
-				ct->numop += rb_op(stackb);
+				ct->numop += rb_op(stackb, 0);
 	}
 }
 
@@ -50,19 +50,19 @@ void	moves(t_psstack **stacka, t_psstack **stackb, t_pscount *ct)
 	{
 		if (ct->indexb > (ct->lenb / 2) + 1)
 			while (ct->indexb++ < ct->lenb)
-				ct->numop += rrb_op(stackb);
+				ct->numop += rrb_op(stackb, 0);
 		else
 			while (ct->indexb-- > 0)
-				ct->numop += rb_op(stackb);
+				ct->numop += rb_op(stackb, 0);
 	}
 	if (ct->indexa > 0 && ct->indexa < ct->lena)
 	{
 		if (ct->indexa > (ct->lena / 2) + 1)
 			while (ct->indexa++ < ct->lena)
-				ct->numop += rra_op(stacka);
+				ct->numop += rra_op(stacka, 0);
 		else
 			while (ct->indexa-- > 0)
-				ct->numop += ra_op(stacka);
+				ct->numop += ra_op(stacka, 0);
 	}
 	ct->numop += pb_op(stacka, stackb);
 }
@@ -78,14 +78,15 @@ int	whenpivots(t_psstack **stacka, t_psstack **stackb, t_pscount *ct)
 	c = (*stacka)->next->next->data;
 	while ((*stackb)->data > c)
 		ct->numop += pa_op(stacka, stackb);
-	ct->numop += rra_op(stacka);
+	ct->numop += rra_op(stacka, 0);
 	while (*stackb && (*stackb)->data > b)
 		ct->numop += pa_op(stacka, stackb);
-	ct->numop += rra_op(stacka);
+	ct->numop += rra_op(stacka, 0);
 	while (*stackb && (*stackb)->data > a)
 		ct->numop += pa_op(stacka, stackb);
-	if (*stackb)
-		ct->numop += rra_op(stacka);
+	getmaxmin(*stacka, ct);
+	if (*stackb || ct->posminb != 0)
+		ct->numop += rra_op(stacka, 0);
 	while (*stackb)
 		ct->numop += pa_op(stacka, stackb);
 	return (0);
@@ -101,12 +102,12 @@ int	when3stacka(t_psstack **stacka, t_pscount *ct)
 	else if (ct->a > ct->b && ct->c > ct->a)
 		return (ct->numop += sa_op(stacka), 1);
 	else if (ct->a < ct->c && ct->c < ct->b)
-		return (ct->numop += sa_op(stacka), ct->numop += ra_op(stacka), 2);
+		return (ct->numop += sa_op(stacka), ct->numop += ra_op(stacka, 0), 2);
 	else if (ct->c < ct->b && ct->b > ct->a)
-		return (ct->numop += rra_op(stacka), 3);
+		return (ct->numop += rra_op(stacka, 0), 3);
 	else if (ct->a > ct->b && ct->b < ct->c)
-		return (ct->numop += ra_op(stacka), 4);
+		return (ct->numop += ra_op(stacka, 0), 4);
 	else if (ct->a > ct->b && ct->b > ct->c)
-		return (ct->numop += ra_op(stacka), ct->numop += sa_op(stacka), 5);
+		return (ct->numop += ra_op(stacka, 0), ct->numop += sa_op(stacka), 5);
 	return (6);
 }

@@ -28,7 +28,7 @@ ft_strtolower.c ft_long_hex.c ft_putpointer.c ft_ultoa.c ft_freedoublepointer.c\
 OBJ = $(SRC:.c=.o)
 INCLUDE = libft.h get_next_line.h ft_printf.h
 
-all: shrek $(NAME)
+all: $(NAME)
 
 $(NAME): $(OBJ) $(INCLUDE)
 	@echo "$(YELLOW)||>>   Compiling $(BLUE)libft $(YELLOW)with $(BLUE)printf $(YELLOW)and $(BLUE)gnl$(YELLOW)   <<||$(RESET)"

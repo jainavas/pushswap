@@ -32,7 +32,7 @@ NAME = push_swap
 
 LIBFTA = libft_ext/libft.a
 
-all: mario $(NAME)
+all: f22raptor $(NAME)
 
 %.o: %.c
 	@$(CC) $(CCFLAGS) -I/libft/libft.h -I/usr/include -O3 -c $< -o $@
@@ -52,7 +52,7 @@ fclean:
 
 re: fclean all
 
-mario:
+f22raptor:
 	@echo "██████                                                                                          "
 	@echo "██▒▒▒▒████                                                                                      "
 	@echo "  ██▒▒▒▒▒▒████                                                                                  "
@@ -93,9 +93,6 @@ mario:
 	@echo "                                                ██▒▒▒▒▒▒░░░░░░░░░░██  ░░▒▒████▒▒▒▒██            "
 	@echo "                                                ██░░░░░░████████░░██    ▒▒▒▒  ██████            "
 	@echo "                                                  ██████        ████      ▒▒░░                  "
-	@echo "                                                                                                "
-	@echo "                                                                                                "
-	@echo "                                                                                          ░░    "
 
 
 .PHONY: all clean fclean re
