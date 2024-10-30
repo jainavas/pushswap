@@ -31,14 +31,13 @@ int	checkoverflow(const char *str)
 	i = spaces(str);
 	minus = 1;
 	res = 0;
+	if (ft_isdigit((int)str[i]) == 0)
+		return (-1);
 	if (str[i] == '-')
 	{
 		minus = -minus;
 		i++;
 	}
-	else
-		if (str[i] == '+')
-			i++;
 	while (ft_isdigit((int)str[i]) == 1)
 	{
 		res *= 10;
