@@ -6,7 +6,7 @@
 /*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 17:06:21 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/30 16:45:29 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/30 18:57:43 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,18 +102,16 @@ int	main(int argc, char**argv)
 	t_psstack	*stacka;
 	t_psstack	*stackb;
 	t_pscount	*ct;
-	char		**res;
 
 	ct = ft_calloc(1, sizeof(t_pscount));
 	stacka = NULL;
 	stackb = NULL;
+	if (argc == 1)
+		return (free(ct), ft_printf("Error\n"), -1);
 	if (argc == 2)
-	{
-		res = ft_split(argv[1], ' ');
-		if (args(&stacka, res, argc) == -1)
+		if (args(&stacka, ft_split(argv[1], ' '), argc) == -1)
 			return (freepsw(&stacka, &stackb, ct), ft_printf("Error\n"), -1);
-	}
-	else if (argc > 2)
+	if (argc > 2)
 		if (args2(&stacka, argv, argc) == -1)
 			return (freepsw(&stacka, &stackb, ct), ft_printf("Error\n"), -1);
 	ct->numop = 0;
