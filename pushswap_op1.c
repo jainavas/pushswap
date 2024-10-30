@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pushswap_op1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 22:06:36 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/28 19:54:04 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/29 22:08:46 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	sa_op(t_psstack **stacka)
 	(*stacka)->next = tmp;
 	(*stacka)->prev = NULL;
 	(*stacka)->next->prev = *stacka;
+	verifierlinks(stacka);
 	return (1);
 }
 
@@ -39,6 +40,7 @@ int	sb_op(t_psstack **stackb)
 	(*stackb)->next = tmp;
 	(*stackb)->prev = NULL;
 	(*stackb)->next->prev = *stackb;
+	verifierlinks(stackb);
 	return (1);
 }
 
@@ -58,10 +60,7 @@ int	pa_op(t_psstack **stacka, t_psstack **stackb)
 	tmp = (*stackb)->next;
 	if (tmp != NULL)
 		tmp->prev = NULL;
-	(*stackb)->next = *stacka;
-	if (*stacka != NULL)
-		(*stacka)->prev = *stackb;
-	*stacka = *stackb;
+	stackadd_front(stacka, *stackb);	
 	*stackb = tmp;
 	return (1);
 }

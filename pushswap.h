@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pushswap.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 17:06:47 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/28 19:59:56 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/29 22:57:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct stack
 }	t_psstack;
 // prices
 int			getcorrectpos(int num, t_psstack *stackb, t_pscount *ct);
-void		price2(t_psstack *stacka, t_psstack *stackb, t_pscount *ct);
+void		price2(t_pscount *ct);
 void		price1(t_psstack *stacka, t_psstack *stackb, t_pscount *ct);
 void		priceget(t_psstack *stacka, t_psstack *stackb, t_pscount *ct);
 int			getpricemov(t_psstack *stacka, t_psstack *stackb, t_pscount *ct);
@@ -65,6 +65,7 @@ t_psstack	*stacklast(t_psstack *lst);
 t_psstack	*stackfirst(t_psstack *lst);
 int			stacksize(t_psstack *lst);
 void		stackclear(t_psstack **lst);
+void 		freepsw(t_psstack **stacka, t_psstack **stackb, t_pscount *ct);
 int			getindex(t_psstack *stack, int num);
 void		stackadd_front(t_psstack **lst, t_psstack *new);
 void		stackadd_back(t_psstack **lst, t_psstack *new);
@@ -91,5 +92,11 @@ int			rrb_op(t_psstack **stackb);
 int			checkrepeat(t_psstack *stack);
 int			debuglilnum(t_psstack **stacka, t_psstack **stackb, t_pscount *ct);
 int			checkascending(t_psstack *stacka);
+int			checkoverflow(const char *str);
+int			args(t_psstack **stacka, char **argv, int argc);
+int			args2(t_psstack **stacka, char **argv, int argc);
+int			strofstrlen(char **res);
+void 		verifierlinks(t_psstack **stack);
+void		lilchanges(t_psstack **stacka, t_psstack **stackb, t_pscount *ct);
 
 #endif

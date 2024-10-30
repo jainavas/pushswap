@@ -28,8 +28,9 @@ t_psstack	*stacklast(t_psstack *lst)
 	t_psstack	*tmp;
 
 	tmp = lst;
-	while (tmp->next)
-		tmp = tmp->next;
+	if (tmp)
+		while (tmp->next)
+			tmp = tmp->next;
 	return (tmp);
 }
 

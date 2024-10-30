@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pushswap_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 22:14:37 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/28 19:47:13 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/29 17:53:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,14 @@ void	stackadd_back(t_psstack **lst, t_psstack *new)
 {
 	t_psstack	*tmp;
 
-	if (lst)
+	if (*lst == NULL)
+		*lst = new;
+	else
 	{
-		if (*lst == NULL)
-			*lst = new;
-		else
-		{
-			tmp = stacklast(*lst);
-			new->next = NULL;
-			tmp->next = new;
-			new->prev = tmp;
-		}
+		tmp = stacklast(*lst);
+		new->next = NULL;
+		tmp->next = new;
+		new->prev = tmp;
 	}
 }
 

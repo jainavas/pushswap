@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pushswapprices.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 21:59:48 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/28 19:51:20 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/29 22:37:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	getcorrectpos(int num, t_psstack *stackb, t_pscount *ct)
 	return (10000);
 }
 
-void	price2(t_psstack *stacka, t_psstack *stackb, t_pscount *ct)
+void	price2(t_pscount *ct)
 {
 	ct->tmpprice = 0;
 	ct->localindexb = ct->posmaxb;
@@ -71,7 +71,7 @@ void	priceget(t_psstack *stacka, t_psstack *stackb, t_pscount *ct)
 	if (stacka->data > ct->minb && stacka->data < ct->maxb)
 		price1(stacka, stackb, ct);
 	else if (stacka->data > ct->maxb || stacka->data < ct->minb)
-		price2(stacka, stackb, ct);
+		price2(ct);
 	if (ct->tmpprice < ct->price)
 	{
 		ct->price = ct->tmpprice;
@@ -84,8 +84,6 @@ void	priceget(t_psstack *stacka, t_psstack *stackb, t_pscount *ct)
 
 int	getpricemov(t_psstack *stacka, t_psstack *stackb, t_pscount *ct)
 {
-	t_psstack	*parse;
-
 	ct->price = INT_MAX;
 	ct->localindexa = 0;
 	while (stacka)

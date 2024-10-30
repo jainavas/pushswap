@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pushswapmoves.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 22:04:10 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/28 20:00:00 by jainavas         ###   ########.fr       */
+/*   Updated: 2024/10/29 20:28:35 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,21 +73,19 @@ int	whenpivots(t_psstack **stacka, t_psstack **stackb, t_pscount *ct)
 	int	b;
 	int	c;
 
-	a = (*stacka)->data;
-	b = (*stacka)->next->data;
+	a = (*stacka)->next->prev->data;
+	b = (*stacka)->next->next->prev->data;
 	c = (*stacka)->next->next->data;
-	if (c < (*stackb)->data)
-	{
-		while ((*stackb)->data > c)
-			ct->numop += pa_op(stacka, stackb);
-	}
+	while ((*stackb)->data > c)
+		ct->numop += pa_op(stacka, stackb);
 	ct->numop += rra_op(stacka);
 	while (*stackb && (*stackb)->data > b)
 		ct->numop += pa_op(stacka, stackb);
 	ct->numop += rra_op(stacka);
 	while (*stackb && (*stackb)->data > a)
 		ct->numop += pa_op(stacka, stackb);
-	ct->numop += rra_op(stacka);
+	if (*stackb)
+		ct->numop += rra_op(stacka);
 	while (*stackb)
 		ct->numop += pa_op(stacka, stackb);
 	return (0);
