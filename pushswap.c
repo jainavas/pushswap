@@ -6,7 +6,7 @@
 /*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 17:06:21 by jainavas          #+#    #+#             */
-/*   Updated: 2025/01/06 18:07:58 by jainavas         ###   ########.fr       */
+/*   Updated: 2025/01/21 17:37:31 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,9 @@ int	turc(t_psstack **stacka, t_psstack **stackb, t_pscount *ct)
 		getmaxmin(*stackb, ct);
 		ct->lena = stacksize(*stacka);
 		ct->lenb = stacksize(*stackb);
-		printstacks(*stacka, *stackb, ct);
 	}
 	when3stacka(stacka, ct);
-	printstacks(*stacka, *stackb, ct);
 	putbigfirst(stackb, ct);
-	printstacks(*stacka, *stackb, ct);
 	whenpivots(stacka, stackb, ct);
 	return (0);
 }
@@ -123,7 +120,6 @@ int	main(int argc, char**argv)
 		return (freepsw(&stacka, &stackb, ct), ft_printf("Error\n"), -1);
 	if (debuglilnum(&stacka, &stackb, ct) != -1)
 		turc(&stacka, &stackb, ct);
-	printstacks(stacka, stackb, ct);
 	freepsw(&stacka, &stackb, ct);
 	return (0);
 }

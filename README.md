@@ -65,6 +65,7 @@ b:
 - **Archivos a entregar**: `Makefile`, `*.h`, `*.c`
 - **Funciones permitidas**: `read`, `write`, `malloc`, `free`, `exit`, `ft_printf` (o funciones equivalentes creadas por ti)
 - **Librerías permitidas**: `libft`
+- **Algoritmo Turco**: El algoritmo turco esta basado en el calculo de el precio, siendo este el coste de poner cada número en su posición correcta, de cada uno de los datos a ordenar. Esto se consigue calculando todos los precios posibles de cada caso y ejecutando el mas "barato".
 
 ## Requisitos del Proyecto
 
