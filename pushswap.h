@@ -6,7 +6,7 @@
 /*   By: jainavas <jainavas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 17:06:47 by jainavas          #+#    #+#             */
-/*   Updated: 2024/10/30 16:43:13 by jainavas         ###   ########.fr       */
+/*   Updated: 2025/01/24 17:40:09 by jainavas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct pushswap
 	int		indexa;
 	int		tmp;
 	int		price;
-	int		maxprice;
 	int		tmpprice;
 	int		localindexa;
 	int		localindexb;
